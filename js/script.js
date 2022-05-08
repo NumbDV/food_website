@@ -51,10 +51,10 @@ window.addEventListener('DOMContentLoaded', () => {
 			minutes = 0;
 			seconds = 0;
 		} else {
-			days = Math.floor(t / (1000 * 60 * 60 * 24)),
-				hours = Math.floor((t / (1000 * 60 * 60) % 24)), // остаток от деления на 24 покажет часы
-				minutes = Math.floor((t / 1000 / 60) % 60),
-				seconds = Math.floor((t / 1000) % 60);
+			days = Math.floor(t / (1000 * 60 * 60 * 24));
+			hours = Math.floor((t / (1000 * 60 * 60) % 24)); // остаток от деления на 24 покажет часы
+			minutes = Math.floor((t / 1000 / 60) % 60);
+			seconds = Math.floor((t / 1000) % 60);
 		}
 
 		return {
