@@ -243,32 +243,54 @@ window.addEventListener('DOMContentLoaded', () => {
 			// form.append(statusMessage);
 			form.insertAdjacentElement('afterend', statusMessage);
 
-			const request = new XMLHttpRequest();
-			request.open('POST', 'server.php');
+			// const request = new XMLHttpRequest();
+			// request.open('POST', 'server.php');
 
-			request.setRequestHeader('Content-type', 'application/json');
+
+
+			// request.setRequestHeader('Content-type', 'application/json');
 			const formData = new FormData(form);
 			const object = {};
 
 			formData.forEach(function (value, key) {
 				object[key] = value;
 			});
-			const json = JSON.stringify(object);
+			
 
-			request.send(json); // отправляем форму
+			fetch('server.php', {
+				method: "POST",
+				headers: {
+					'Content-type': 'application/json'
+				},
+				body: JSON.stringify(object)
+			})
+			.then(data => data.text()) // получаем ответ от сервера в текстово формате
+			.then(data => {
+				console.log(data);
+				showThanksModal(message.success);
+				
 
-			request.addEventListener('load', () => {
-				if (request.status === 200) {
-					console.log(request.response);
-					showThanksModal(message.success);
-					form.reset(); // сбрасываем данные из формы
-
-					statusMessage.remove(); // через 3 секунды убираем сообщение о статусе
-
-				} else {
-					showThanksModal(message.failure);
-				}
+				statusMessage.remove(); // через 3 секунды убираем сообщение о статусе
+			}).catch(() => {
+				showThanksModal(message.failure);
+			}).finally(() => {
+				form.reset(); // сбрасываем данные из формы
 			});
+
+			// request.send(json); // отправляем форму
+
+			// request.addEventListener('load', () => {
+			// 	if (request.status === 200) {
+			// 		console.log(request.response);
+			// 		showThanksModal(message.success);
+			// 		form.reset(); // сбрасываем данные из формы
+
+			// 		statusMessage.remove(); // через 3 секунды убираем сообщение о статусе
+
+			// 	} else {
+			// 		showThanksModal(message.failure);
+			// 	}
+			// });
 		});
 	}
 
@@ -296,5 +318,6 @@ window.addEventListener('DOMContentLoaded', () => {
 			closeModal();
 		}, 5000);
 	}
+
 
 });
